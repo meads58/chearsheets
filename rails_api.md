@@ -30,12 +30,25 @@ end
 def index
   render json: 'json data'
 end
-
+```
+```
 def show
   list = List.find(params[:id])
   render json: list
 end
 ```
+* Example parasing json from a static file
+```
+class TodolistsController < ApplicationController
+  require 'json'
+    def index
+      file = File.read('app/assets/data/empty.json')
+      @data_hash = JSON.parse(file)
+    end
+end
+```
+
+
 
 ##Curl to test api
 * boot up server then submit the curl command
