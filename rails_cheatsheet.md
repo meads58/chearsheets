@@ -61,3 +61,11 @@ def index
 ```
 touch app/views/ctrlName/index.html.erb
 ```
+
+##strong pramams in controller
+* This goes in your create action of the controller.
+```
+def params_example
+  params.require("model").permit("param")
+end
+```
