@@ -1,3 +1,7 @@
+Before do
+  User.create(username: 'user1', password: 'test')
+end
+
 Given(/^I am at the login screen$/) do
   visit '/'
 end
@@ -16,9 +20,13 @@ end
 
 Then(/^I should see "([^"]*)" message$/) do |message|
   expect(page).to have_content message
-  expect(page.current_path).to eq '/'
 end
 
 Then(/^be at the "([^"]*)" page$/) do |arg1|
   pending # Write code here that turns the phrase above into concrete actions
 end
+
+Then(/^be at the "([^"]*)" "([^"]*)" page$/) do |url, page_name|
+  expect(page.current_path).to eq url
+end
+

@@ -16,17 +16,39 @@ class TodoApp < Sinatra::Base
     erb :index
   end
 
-  post '/user' do
-    user = User.create(username: params['username'], password: params['password'])
-    session[:user] = user.id
-    if user.id
-      flash[:notice] = "Welcome #{session[:user]}"
-      flash[:notice] = "User Not Found"
-      redirect '/'
-  end
-
   get '/user/new' do
    erb :signup
+  end
+
+  post '/user/new' do
+    @user = User.create(username: params['username'], password: params['password'])
+
+    if @user.save
+      session[:user_id] = @user.id
+      flash[:notice] = "Welcome #{@user.username}"
+      redirect '/user/profile:id'
+    else
+      flash[:notice] = "User Not Saved"
+      redirect '/'
+    end
+
+  end
+
+  post '/user/session' do
+    username, password = params['username'], params['password']
+    @user = User.authenticate(username, password)
+    if @user
+      session[:user_id] = @user.id
+      flash[:notice] = "Welcome #{@user.username}"
+      redirect '/user/profile:id'
+     else
+      flash[:notice] = "User Not Found"
+      redirect '/'
+    end
+  end
+
+  get '/user/profile:id' do
+    erb :user_profile
   end
 
 
