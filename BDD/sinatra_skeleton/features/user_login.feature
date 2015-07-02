@@ -15,7 +15,7 @@ Feature: user login
     And I fill in password with "test"
     And I press "submit"
     Then I should see "Welcome me" message
-    And be at the "/user/profile:id" "user profile" page
+    And be at the "/user/profile:from/:to" "user profile" page
 
   Scenario: As a regsitered user they can log in
     Given I am at the login screen
@@ -23,4 +23,5 @@ Feature: user login
     And I fill in password with "test"
     And I press "login"
     Then I should see "Welcome user1" message
-    And be at the "/user/profile:id" "user profile" page
+    And be at the "/user/profile:from/:to" "user profile" page
+

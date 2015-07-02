@@ -5,6 +5,8 @@ gem 'rack-flash3'
 gem 'data_mapper'
 gem 'dm-postgres-adapter'
 gem 'bcrypt'
+gem 'json'
+gem 'activesupport', '~> 4.2.2'
 
 group :development, :test do
 

@@ -2,10 +2,23 @@ require 'sinatra/base'
 require 'rack-flash'
 require 'data_mapper'
 require_relative 'data_mapper_setup'
-
+require 'net/http'
+require 'json'
+# require 'active_support/core_ext'
+require 'active_support/all'
+require 'open-uri'
 
 
 class TodoApp < Sinatra::Base
+
+  url = 'http://rates.fxcm.com/RatesXML'
+  resp = Net::HTTP.get_response(URI.parse(url))
+  body = resp.body
+
+  doc = Nokogiri::HTML(open(url))
+  #Hash.from_xml(resp).to_json
+  # get_response takes an URI object
+
 
   set :views, Proc.new {File.join(root, "..", "views")}
   enable :sessions
@@ -26,7 +39,7 @@ class TodoApp < Sinatra::Base
     if @user.save
       session[:user_id] = @user.id
       flash[:notice] = "Welcome #{@user.username}"
-      redirect '/user/profile:id'
+      redirect '/user/profile:from/:to'
     else
       flash[:notice] = "User Not Saved"
       redirect '/'
@@ -47,18 +60,17 @@ class TodoApp < Sinatra::Base
     end
   end
 
-  get '/user/profile:id' do
+  get '/user/profile:from/:to' do
+    @data = doc
     erb :user_profile
   end
-
-
-
-# get '/:name' do
-#   session[:name] = params['name']
-#   redirect '/welcome'
-#   # "Hello, #{session[:name]}!"
-# end
 
   # start the server if ruby file executed directly
   run! if app_file == $0
 end
+
+
+
+
+
+
